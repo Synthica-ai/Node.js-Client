@@ -1,21 +1,21 @@
-# Replicate Node.js client
+# Synthica Node.js client
 
-A Node.js client for [Replicate](https://replicate.com).
+A Node.js client for [Synthica](https://synthica.com).
 It lets you run models from your Node.js code,
 and everything else you can do with
-[Replicate's HTTP API](https://replicate.com/docs/reference/http).
+[Synthica's HTTP API](https://sytnhica.com/docs/reference/http).
 
 > **Warning**
-> This library can't interact with Replicate's API directly from a browser.
+> This library can't interact with Synthica's API directly from a browser.
 > For more information about how to build a web application
-> check out our ["Build a website with Next.js"](https://replicate.com/docs/get-started/nextjs) guide.
+> check out our ["Build a website with Next.js"](https://synthica.com/docs/get-started/nextjs) guide.
 
 ## Installation
 
 Install it from npm:
 
 ```bash
-npm install replicate
+npm install synthica
 ```
 
 ## Usage
@@ -23,11 +23,11 @@ npm install replicate
 Create the client:
 
 ```js
-import Replicate from "replicate";
+import Synthica from "synthica";
 
-const replicate = new Replicate({
-  // get your token from https://replicate.com/account
-  auth: process.env.REPLICATE_API_TOKEN,
+const synthica = new Synthica({
+  // get your token from https://synthica.com/account
+  auth: process.env.Synthica_API_TOKEN,
 });
 ```
 
@@ -38,14 +38,14 @@ const model = "stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b29
 const input = {
   prompt: "a 19th century portrait of a raccoon gentleman wearing a suit",
 };
-const output = await replicate.run(model, { input });
-// ['https://replicate.delivery/pbxt/GtQb3Sgve42ZZyVnt8xjquFk9EX5LP0fF68NTIWlgBMUpguQA/out-0.png']
+const output = await synthica.run(model, { input });
+// ['https://synthica.delivery/pbxt/GtQb3Sgve42ZZyVnt8xjquFk9EX5LP0fF68NTIWlgBMUpguQA/out-0.png']
 ```
 
 You can also run a model in the background:
 
 ```js
-let prediction = await replicate.predictions.create({
+let prediction = await synthica.predictions.create({
   version: "27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478",
   input: {
     prompt: "painting of a cat by andy warhol",
@@ -56,15 +56,15 @@ let prediction = await replicate.predictions.create({
 Then fetch the prediction result later:
 
 ```js
-prediction = await replicate.predictions.get(prediction.id);
+prediction = await synthica.predictions.get(prediction.id);
 ```
 
 Or wait for the prediction to finish:
 
 ```js
-prediction = await replicate.wait(prediction);
+prediction = await synthica.wait(prediction);
 console.log(prediction.output);
-// ['https://replicate.delivery/pbxt/RoaxeXqhL0xaYyLm6w3bpGwF5RaNBjADukfFnMbhOyeoWBdhA/out-0.png']
+// ['https://synthica.delivery/pbxt/RoaxeXqhL0xaYyLm6w3bpGwF5RaNBjADukfFnMbhOyeoWBdhA/out-0.png']
 ```
 
 To run a model that takes a file input,
@@ -86,8 +86,8 @@ const model = "nightmareai/real-esrgan:42fed1c4974146d4d2414e2be2c5277c7fcf05fcc
 const input = {
   image: dataURI,
 };
-const output = await replicate.run(model, { input });
-// ['https://replicate.delivery/mgxm/e7b0e122-9daa-410e-8cde-006c7308ff4d/output.png']
+const output = await synthica.run(model, { input });
+// ['https://synthica.delivery/mgxm/e7b0e122-9daa-410e-8cde-006c7308ff4d/output.png']
 ```
 
 ## API
@@ -95,17 +95,17 @@ const output = await replicate.run(model, { input });
 ### Constructor
 
 ```js
-const replicate = new Replicate(options);
+const synthica = new Synthica(options);
 ```
 
-| name                | type     | description                                                                       |
-| ------------------- | -------- | --------------------------------------------------------------------------------- |
-| `options.auth`      | string   | **Required**. API access token                                                    |
-| `options.userAgent` | string   | Identifier of your app. Defaults to `replicate-javascript/${packageJSON.version}` |
-| `options.baseUrl`   | string   | Defaults to https://api.replicate.com/v1                                          |
-| `options.fetch`     | function | Fetch function to use. Defaults to `globalThis.fetch`                             |
+| name                | type     | description                                                                      |
+| ------------------- | -------- | -------------------------------------------------------------------------------- |
+| `options.auth`      | string   | **Required**. API access token                                                   |
+| `options.userAgent` | string   | Identifier of your app. Defaults to `synthica-javascript/${packageJSON.version}` |
+| `options.baseUrl`   | string   | Defaults to https://api.sytnhica.com/v1                                          |
+| `options.fetch`     | function | Fetch function to use. Defaults to `globalThis.fetch`                            |
 
-The client makes requests to Replicate's API using
+The client makes requests to Synthica's API using
 [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch).
 By default, the `globalThis.fetch` function is used,
 which is available on [Node.js 18](https://nodejs.org/en/blog/announcements/v18-release-announce#fetch-experimental) and later,
@@ -121,20 +121,20 @@ you can install a fetch function from an external package like
 and pass it to the `fetch` option in the constructor.
 
 ```js
-import Replicate from "replicate";
+import Synthica from "synthica";
 import fetch from "cross-fetch";
 
-const replicate = new Replicate({
-  // get your token from https://replicate.com/account
-  auth: process.env.REPLICATE_API_TOKEN,
+const synthica = new Synthica({
+  // get your token from https://synthica.com/account
+  auth: process.env.Synthica_API_TOKEN,
   fetch: fetch,
 });
 ```
 
-### `replicate.models.get`
+### `synthica.models.get`
 
 ```js
-const response = await replicate.models.get(model_owner, model_name);
+const response = await synthica.models.get(model_owner, model_name);
 ```
 
 | name          | type   | description                                                             |
@@ -144,12 +144,12 @@ const response = await replicate.models.get(model_owner, model_name);
 
 ```jsonc
 {
-  "url": "https://replicate.com/replicate/hello-world",
-  "owner": "replicate",
+  "url": "https://synthica.com/synthica/hello-world",
+  "owner": "synthica",
   "name": "hello-world",
   "description": "A tiny model that says hello",
   "visibility": "public",
-  "github_url": "https://github.com/replicate/cog-examples",
+  "github_url": "https://github.com/synthica/cog-examples",
   "paper_url": null,
   "license_url": null,
   "latest_version": {
@@ -158,10 +158,10 @@ const response = await replicate.models.get(model_owner, model_name);
 }
 ```
 
-### `replicate.models.versions.list`
+### `synthica.models.versions.list`
 
 ```js
-const response = await replicate.models.versions.list(model_owner, model_name);
+const response = await synthica.models.versions.list(model_owner, model_name);
 ```
 
 | name          | type   | description                                                             |
@@ -194,10 +194,10 @@ const response = await replicate.models.versions.list(model_owner, model_name);
 }
 ```
 
-### `replicate.models.versions.get`
+### `synthica.models.versions.get`
 
 ```js
-const response = await replicate.models.versions.get(model_owner, model_name, version_id);
+const response = await synthica.models.versions.get(model_owner, model_name, version_id);
 ```
 
 | name          | type   | description                                                             |
@@ -217,20 +217,20 @@ const response = await replicate.models.versions.get(model_owner, model_name, ve
 }
 ```
 
-### `replicate.collections.get`
+### `synthica.collections.get`
 
 ```js
-const response = await replicate.collections.get(collection_slug);
+const response = await synthica.collections.get(collection_slug);
 ```
 
-| name              | type   | description                                                                    |
-| ----------------- | ------ | ------------------------------------------------------------------------------ |
-| `collection_slug` | string | **Required**. The slug of the collection. See http://replicate.com/collections |
+| name              | type   | description                                                                   |
+| ----------------- | ------ | ----------------------------------------------------------------------------- |
+| `collection_slug` | string | **Required**. The slug of the collection. See http://synthica.com/collections |
 
-### `replicate.predictions.create`
+### `synthica.predictions.create`
 
 ```js
-const response = await replicate.predictions.create(options);
+const response = await synthica.predictions.create(options);
 ```
 
 | name                            | type     | description                                                                                                                      |
@@ -245,8 +245,8 @@ const response = await replicate.predictions.create(options);
   "id": "ufawqhfynnddngldkgtslldrkq",
   "version": "5c7d5dc6dd8bf75c1acaa8565735e7986bc5b66206b55cca93cb72c9bf15ccaa",
   "urls": {
-    "get": "https://api.replicate.com/v1/predictions/ufawqhfynnddngldkgtslldrkq",
-    "cancel": "https://api.replicate.com/v1/predictions/ufawqhfynnddngldkgtslldrkq/cancel"
+    "get": "https://api.synthica.com/v1/predictions/ufawqhfynnddngldkgtslldrkq",
+    "cancel": "https://api.synthica.com/v1/predictions/ufawqhfynnddngldkgtslldrkq/cancel"
   },
   "created_at": "2022-04-26T22:13:06.224088Z",
   "started_at": null,
@@ -262,10 +262,10 @@ const response = await replicate.predictions.create(options);
 }
 ```
 
-### `replicate.predictions.get`
+### `synthica.predictions.get`
 
 ```js
-const response = await replicate.predictions.get(prediction_id);
+const response = await synthica.predictions.get(prediction_id);
 ```
 
 | name            | type   | description                     |
@@ -277,8 +277,8 @@ const response = await replicate.predictions.get(prediction_id);
   "id": "ufawqhfynnddngldkgtslldrkq",
   "version": "5c7d5dc6dd8bf75c1acaa8565735e7986bc5b66206b55cca93cb72c9bf15ccaa",
   "urls": {
-    "get": "https://api.replicate.com/v1/predictions/ufawqhfynnddngldkgtslldrkq",
-    "cancel": "https://api.replicate.com/v1/predictions/ufawqhfynnddngldkgtslldrkq/cancel"
+    "get": "https://api.synthica.com/v1/predictions/ufawqhfynnddngldkgtslldrkq",
+    "cancel": "https://api.synthica.com/v1/predictions/ufawqhfynnddngldkgtslldrkq/cancel"
   },
   "created_at": "2022-04-26T22:13:06.224088Z",
   "started_at": null,
@@ -294,25 +294,25 @@ const response = await replicate.predictions.get(prediction_id);
 }
 ```
 
-### `replicate.predictions.list`
+### `synthica.predictions.list`
 
 ```js
-const response = await replicate.predictions.list();
+const response = await synthica.predictions.list();
 ```
 
-`replicate.predictions.list()` takes no arguments.
+`synthica.predictions.list()` takes no arguments.
 
 ```jsonc
 {
   "previous": null,
-  "next": "https://api.replicate.com/v1/predictions?cursor=cD0yMDIyLTAxLTIxKzIzJTNBMTglM0EyNC41MzAzNTclMkIwMCUzQTAw",
+  "next": "https://api.synthica.com/v1/predictions?cursor=cD0yMDIyLTAxLTIxKzIzJTNBMTglM0EyNC41MzAzNTclMkIwMCUzQTAw",
   "results": [
     {
       "id": "jpzd7hm5gfcapbfyt4mqytarku",
       "version": "b21cbe271e65c1718f2999b038c18b45e21e4fba961181fbfae9342fc53b9e05",
       "urls": {
-        "get": "https://api.replicate.com/v1/predictions/jpzd7hm5gfcapbfyt4mqytarku",
-        "cancel": "https://api.replicate.com/v1/predictions/jpzd7hm5gfcapbfyt4mqytarku/cancel"
+        "get": "https://api.synthica.com/v1/predictions/jpzd7hm5gfcapbfyt4mqytarku",
+        "cancel": "https://api.synthica.com/v1/predictions/jpzd7hm5gfcapbfyt4mqytarku/cancel"
       },
       "created_at": "2022-04-26T20:00:40.658234Z",
       "started_at": "2022-04-26T20:00:84.583803Z",
@@ -325,10 +325,10 @@ const response = await replicate.predictions.list();
 }
 ```
 
-### `replicate.trainings.create`
+### `synthica.trainings.create`
 
 ```js
-const response = await replicate.trainings.create(options);
+const response = await synthica.trainings.create(options);
 ```
 
 | name                            | type     | description                                                                                                                      |
@@ -356,10 +356,10 @@ const response = await replicate.trainings.create(options);
 }
 ```
 
-### `replicate.trainings.get`
+### `synthica.trainings.get`
 
 ```js
-const response = await replicate.trainings.get(training_id);
+const response = await synthica.trainings.get(training_id);
 ```
 
 | name          | type   | description                   |
@@ -387,25 +387,25 @@ const response = await replicate.trainings.get(training_id);
 }
 ```
 
-### `replicate.trainings.list`
+### `synthica.trainings.list`
 
 ```js
-const response = await replicate.trainings.list();
+const response = await synthica.trainings.list();
 ```
 
-`replicate.trainings.list()` takes no arguments.
+`synthica.trainings.list()` takes no arguments.
 
 ```jsonc
 {
   "previous": null,
-  "next": "https://api.replicate.com/v1/trainings?cursor=cD0yMDIyLTAxLTIxKzIzJTNBMTglM0EyNC41MzAzNTclMkIwMCUzQTAw",
+  "next": "https://api.synthica.com/v1/trainings?cursor=cD0yMDIyLTAxLTIxKzIzJTNBMTglM0EyNC41MzAzNTclMkIwMCUzQTAw",
   "results": [
     {
       "id": "jpzd7hm5gfcapbfyt4mqytarku",
       "version": "b21cbe271e65c1718f2999b038c18b45e21e4fba961181fbfae9342fc53b9e05",
       "urls": {
-        "get": "https://api.replicate.com/v1/trainings/jpzd7hm5gfcapbfyt4mqytarku",
-        "cancel": "https://api.replicate.com/v1/trainings/jpzd7hm5gfcapbfyt4mqytarku/cancel"
+        "get": "https://api.synthica.com/v1/trainings/jpzd7hm5gfcapbfyt4mqytarku",
+        "cancel": "https://api.synthica.com/v1/trainings/jpzd7hm5gfcapbfyt4mqytarku/cancel"
       },
       "created_at": "2022-04-26T20:00:40.658234Z",
       "started_at": "2022-04-26T20:00:84.583803Z",
@@ -418,7 +418,7 @@ const response = await replicate.trainings.list();
 }
 ```
 
-### `replicate.paginate`
+### `synthica.paginate`
 
 Pass another method as an argument to iterate over results
 that are spread across multiple pages.
@@ -429,21 +429,21 @@ which you can use in a for loop or iterate over manually.
 
 ```js
 // iterate over paginated results in a for loop
-for await (const page of replicate.paginate(replicate.predictions.list)) {
+for await (const page of synthica.paginate(synthica.predictions.list)) {
   /* do something with page of results */
 }
 
 // iterate over paginated results one at a time
-let paginator = replicate.paginate(replicate.predictions.list);
+let paginator = synthica.paginate(synthica.predictions.list);
 const page1 = await paginator.next();
 const page2 = await paginator.next();
 // etc.
 ```
 
-### `replicate.request`
+### `synthica.request`
 
 ```js
-const response = await replicate.request(route, parameters);
+const response = await synthica.request(route, parameters);
 ```
 
 | name                 | type   | description                                                  |
@@ -451,10 +451,10 @@ const response = await replicate.request(route, parameters);
 | `options.route`      | string | Required. REST API endpoint path.                            |
 | `options.parameters` | object | URL, query, and request body parameters for the given route. |
 
-The `replicate.request()` method is used by the other methods
-to interact with the Replicate API.
+The `synthica.request()` method is used by the other methods
+to interact with the Synthica API.
 You can call this method directly to make other requests to the API.
 
 ## TypeScript
 
-The `Replicate` constructor and all `replicate.*` methods are fully typed.
+The `Synthica` constructor and all `synthica.*` methods are fully typed.

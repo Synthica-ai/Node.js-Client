@@ -5,38 +5,38 @@ const trainings = require('./lib/trainings');
 const packageJSON = require('./package.json');
 
 /**
- * Replicate API client library
+ * Synthica API client library
  *
- * @see https://replicate.com/docs/reference/http
+ * @see https://synthica.com/docs/reference/http
  * @example
- * // Create a new Replicate API client instance
- * const Replicate = require("replicate");
- * const replicate = new Replicate({
- *     // get your token from https://replicate.com/account
- *     auth: process.env.REPLICATE_API_TOKEN,
+ * // Create a new Synthica API client instance
+ * const Synthica = require("synthica");
+ * const synthica = new Synthica({
+ *     // get your token from https://synthica.com/account
+ *     auth: process.env.Synthica_API_TOKEN,
  *     userAgent: "my-app/1.2.3"
  * });
  *
  * // Run a model and await the result:
  * const model = 'owner/model:version-id'
  * const input = {text: 'Hello, world!'}
- * const output = await replicate.run(model, { input });
+ * const output = await synthica.run(model, { input });
  */
-class Replicate {
+class Synthica {
   /**
-   * Create a new Replicate API client instance.
+   * Create a new Synthica API client instance.
    *
    * @param {object} options - Configuration options for the client
    * @param {string} options.auth - Required. API access token
    * @param {string} options.userAgent - Identifier of your app
-   * @param {string} [options.baseUrl] - Defaults to https://api.replicate.com/v1
+   * @param {string} [options.baseUrl] - Defaults to https://api.synthica.com/v1
    * @param {Function} [options.fetch] - Fetch function to use. Defaults to `globalThis.fetch`
    */
   constructor(options) {
     this.auth = options.auth;
     this.userAgent =
-      options.userAgent || `replicate-javascript/${packageJSON.version}`;
-    this.baseUrl = options.baseUrl || 'https://api.replicate.com/v1';
+      options.userAgent || `synthica-javascript/${packageJSON.version}`;
+    this.baseUrl = options.baseUrl || 'https://api.synthica.com/v1';
     this.fetch = options.fetch || globalThis.fetch;
 
     this.collections = {
@@ -115,7 +115,7 @@ class Replicate {
   }
 
   /**
-   * Make a request to the Replicate API.
+   * Make a request to the Synthica API.
    *
    * @param {string} route - REST API endpoint path
    * @param {object} parameters - Request parameters
@@ -163,7 +163,7 @@ class Replicate {
    *
    * @generator
    * @example
-   * for await (const page of replicate.paginate(replicate.predictions.list) {
+   * for await (const page of synthica.paginate(synthica.predictions.list) {
    *    console.log(page);
    * }
    * @param {Function} endpoint - Function that returns a promise for the next page of results
@@ -243,4 +243,4 @@ class Replicate {
   }
 }
 
-module.exports = Replicate;
+module.exports = Synthica;
